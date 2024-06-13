@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	for {
 		fmt.Fprint(os.Stdout, "$ ")
 		cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -19,7 +18,7 @@ func main() {
 			os.Exit(0)
 		} else if strings.HasPrefix(cmd, "echo ") {
 			res, _ := strings.CutPrefix(cmd, "echo")
-			fmt.Println(res)
+			fmt.Println(strings.TrimSpace(res))
 		} else {
 			fmt.Printf("%s: command not found\n", cmd)
 		}
