@@ -46,7 +46,13 @@ func checkCmd(cmd string) {
 			}
 		}
 	default:
-		cmdRes := exec.Command(line[0])
+		var cmdRes *exec.Cmd
+		if len(line) > 1 {
+			cmdRes = exec.Command(line[0], strings.Join(line[1:], " "))
+		} else {
+			cmdRes = exec.Command(line[0])
+		}
+
 		cmdStdOut, err := cmdRes.Output()
 		if err != nil {
 			fmt.Printf("%s: command not found\n", cmd)
