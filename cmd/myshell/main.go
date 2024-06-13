@@ -46,18 +46,22 @@ func checkCmd(cmd string) {
 			}
 		}
 	default:
-		var cmdRes *exec.Cmd
-		if len(line) > 1 {
-			cmdRes = exec.Command(line[0], strings.Join(line[1:], " "))
-		} else {
-			cmdRes = exec.Command(line[0])
-		}
+		handleNativeCommands(line)
+	}
+}
 
-		cmdStdOut, err := cmdRes.Output()
-		if err != nil {
-			fmt.Printf("%s: command not found\n", cmd)
-		} else {
-			fmt.Print(string(cmdStdOut))
-		}
+func handleNativeCommands(line []string) {
+	var cmdRes *exec.Cmd
+	if len(line) > 1 {
+		cmdRes = exec.Command(line[0], strings.Join(line[1:], " "))
+	} else {
+		cmdRes = exec.Command(line[0])
+	}
+
+	cmdStdOut, err := cmdRes.Output()
+	if err != nil {
+		fmt.Printf("%s: command not found\n", line[0])
+	} else {
+		fmt.Print(string(cmdStdOut))
 	}
 }
