@@ -47,11 +47,11 @@ func checkCmd(cmd string) {
 		}
 	default:
 		cmdRes := exec.Command(line[0])
-		err := cmdRes.Run()
+		cmdStdOut, err := cmdRes.Output()
 		if err != nil {
 			fmt.Printf("%s: command not found\n", cmd)
 		} else {
-			fmt.Println(cmdRes)
+			fmt.Println(string(cmdStdOut))
 		}
 	}
 }
