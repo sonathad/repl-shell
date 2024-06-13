@@ -8,18 +8,34 @@ import (
 )
 
 func main() {
+	builtin := map[string]bool{
+		"echo": true,
+		"exit": true,
+		"type": true,
+	}
+
 	for {
 		fmt.Fprint(os.Stdout, "$ ")
 		cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		cmd = strings.TrimSpace(cmd)
-		if cmd == "" {
-			return
-		} else if cmd == "exit 0" {
+
+		line := strings.Split(cmd, " ")
+		suf := strings.Join(line[1:], " ")
+
+		switch pre := line[0]; pre {
+		case "exit 0":
 			os.Exit(0)
-		} else if strings.HasPrefix(cmd, "echo ") {
-			res, _ := strings.CutPrefix(cmd, "echo")
-			fmt.Println(strings.TrimSpace(res))
-		} else {
+		case "":
+			return
+		case "echo":
+			fmt.Println(strings.TrimSpace(suf))
+		case "type":
+			if builtin[suf] {
+				fmt.Printf("%s is a shell builtin\n", suf)
+			} else {
+				fmt.Printf("%s: not found\n", suf)
+			}
+		default:
 			fmt.Printf("%s: command not found\n", cmd)
 		}
 	}
