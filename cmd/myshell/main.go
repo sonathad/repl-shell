@@ -23,7 +23,7 @@ func main() {
 		suf := strings.Join(line[1:], " ")
 
 		switch pre := line[0]; pre {
-		case "exit 0":
+		case "exit":
 			os.Exit(0)
 		case "":
 			return
