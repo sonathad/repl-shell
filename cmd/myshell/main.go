@@ -57,7 +57,7 @@ func checkCmd(cmd string) {
 		if err != nil {
 			fmt.Printf("%s: command not found\n", cmd)
 		} else {
-			fmt.Println(string(cmdStdOut))
+			fmt.Print(string(cmdStdOut))
 		}
 	}
 }
