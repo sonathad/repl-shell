@@ -10,22 +10,23 @@ import (
 )
 
 func main() {
+	reader := bufio.NewReader(os.Stdin)
+
 	for {
-		fmt.Fprint(os.Stdout, "$ ")
-		cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-		cmd = strings.TrimSpace(cmd)
-		checkCmd(cmd)
+		checkCmd(reader)
 	}
 }
 
-func checkCmd(cmd string) {
-	builtins := map[string]bool{
-		"echo": true,
-		"exit": true,
-		"type": true,
+func checkCmd(reader *bufio.Reader) {
+	fmt.Fprint(os.Stdout, "$ ")
+
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("error receiving input")
+		os.Exit(1)
 	}
 
-	line := strings.Split(cmd, " ")
+	line := strings.Split(strings.TrimSpace(input), " ")
 	suf := strings.Join(line[1:], " ")
 
 	switch pre := line[0]; pre {
@@ -36,7 +37,13 @@ func checkCmd(cmd string) {
 	case "echo":
 		fmt.Println(strings.TrimSpace(suf))
 	case "type":
-		if builtins[suf] {
+		existingBuiltins := map[string]bool{
+			"echo": true,
+			"exit": true,
+			"type": true,
+			"cd":   true,
+		}
+		if existingBuiltins[suf] {
 			fmt.Printf("%s is a shell builtin\n", suf)
 		} else {
 			cmdPath, err := exec.LookPath(suf)
