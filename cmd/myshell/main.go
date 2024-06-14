@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -46,6 +47,14 @@ func checkCmd(cmd string) {
 			}
 		}
 	case "cd":
+		if strings.Contains(suf, "~") {
+			homedir, err := os.UserHomeDir()
+			if err != nil {
+				log.Fatal(err)
+			}
+			suf = strings.Replace(suf, "~", homedir, -1)
+			fmt.Println(suf)
+		}
 		err := os.Chdir(suf)
 		if err != nil {
 			fmt.Printf("cd: %s: No such file or directory\n", suf)
