@@ -45,6 +45,11 @@ func checkCmd(cmd string) {
 				fmt.Printf("%s is %s\n", suf, cmdPath)
 			}
 		}
+	case "cd":
+		err := os.Chdir(suf)
+		if err != nil {
+			fmt.Printf("cd: %s: No such file or directory\n", suf)
+		}
 	default:
 		handleNativeCommands(line)
 	}
