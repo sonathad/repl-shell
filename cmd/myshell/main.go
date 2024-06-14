@@ -53,7 +53,6 @@ func checkCmd(cmd string) {
 				log.Fatal(err)
 			}
 			suf = strings.Replace(suf, "~", homedir, -1)
-			fmt.Println(suf)
 		}
 		err := os.Chdir(suf)
 		if err != nil {
